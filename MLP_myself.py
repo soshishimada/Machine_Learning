@@ -14,10 +14,12 @@ import tensorflow as tf
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
+#Learning late for gradient descend
 flags.DEFINE_float('learning_rate', 0.001, 'Initial learning rate.')
 
-
+#get mnist data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+
 
 def inference(X,keep_prob):
     with tf.name_scope('fc1') as scope:
@@ -66,24 +68,18 @@ with tf.Graph().as_default():
     # Variables
     x = tf.placeholder("float", [None, 784])
     y_ = tf.placeholder("float", [None, 10])
-
     keep_prob = tf.placeholder("float")
 
-    # w_h = tf.Variable(tf.random_normal([784, 625], mean=0.0, stddev=0.05))
-    # w_o = tf.Variable(tf.random_normal([625, 10], mean=0.0, stddev=0.05))
-    # b_h = tf.Variable(tf.zeros([625]))
-    # b_o = tf.Variable(tf.zeros([10]))
-
+    #inf: prediction of labels
     inf = inference(x,0.5)
 
+    #compute lossfunction.  y_:labels, inf:predictions
     loss_value = loss(y_,inf)
 
     train_op = training(loss_value, FLAGS.learning_rate)
     acc = accuracy(inf, y_)
 
-    saver = tf.train.Saver()
     sess = tf.Session()
-
     sess.run(tf.global_variables_initializer())
     tf.summary.FileWriter(LOG_DIR, sess.graph)
     summary_op = tf.summary.merge_all()
@@ -113,5 +109,5 @@ with tf.Graph().as_default():
         y_: mnist.test.labels,
         keep_prob: 1.0
     })
-
+    print("test_accuracy: ",test_accuracy)
 
