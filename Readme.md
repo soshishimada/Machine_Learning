@@ -1,4 +1,4 @@
-# mnit with Machine Learning
+# mnist with Machine Learning
 Predicting handwritten numbers with various machine learning methods
 
 ## Getting Started
