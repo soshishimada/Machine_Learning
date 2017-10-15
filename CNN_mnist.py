@@ -107,6 +107,7 @@ with tf.Graph().as_default():
     #inf: prediction of labels
     inf = inference(x,0.5)
 
+
     #compute lossfunction.  y_:labels, inf:predictions
     loss_value = loss(y_,inf)
 
