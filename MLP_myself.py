@@ -81,21 +81,25 @@ with tf.Graph().as_default():
 
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
-    tf.summary.FileWriter(LOG_DIR, sess.graph)
-    summary_op = tf.summary.merge_all()
     summary_writer = tf.summary.FileWriter("./log/", sess.graph_def)
+    summary_op = tf.summary.merge_all()
+
 
     """
     training
     """
 
     for i in range(20001):
+
         batch_xs,batch_ys = mnist.train.next_batch(100)
-        sess.run(train_op, feed_dict={
+        _, summaries_str = sess.run([train_op, summary_op], feed_dict={
             x: batch_xs,
             y_: batch_ys,
             keep_prob: 0.5
         })
+        summary_writer.add_summary(summaries_str, global_step=i)
+
+
         if i%2000 == 0:
             train_accuracy = sess.run(acc, feed_dict={
                 x: batch_xs,
