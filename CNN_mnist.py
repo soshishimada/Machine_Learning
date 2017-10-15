@@ -144,15 +144,15 @@ with tf.Graph().as_default():
                 keep_prob: 1.0
             })
             print("train_accuracy: ",train_accuracy)
-            if train_accuracy < previous_train_accuracy:
+            if train_accuracy <= previous_train_accuracy:
                 print train_accuracy
                 print previous_train_accuracy
                 patience += 1
                 previous_train_accuracy = train_accuracy
 
-        if patience >= 4:
-            print "early stopping"
-            break
+            if patience >= 4:
+                print "early stopping"
+                break
 
     test_accuracy = sess.run(acc, feed_dict={
         x: mnist.test.images,
